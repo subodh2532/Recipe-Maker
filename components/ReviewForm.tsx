@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ReviewInsert } from '@/lib/types';
 
 export function ReviewForm({ recipeId }: { recipeId: string }) {
   const [rating, setRating] = useState(5);
@@ -23,31 +22,22 @@ export function ReviewForm({ recipeId }: { recipeId: string }) {
     setFeedback(null);
 
     try {
-      const payload: ReviewInsert = {
-        recipe_id: recipeId,
-        rating,
-        comment: comment.trim(),
-        video_url: videoUrl.trim() || null,
-      };
-
       const response = await fetch('/api/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ recipe_id: recipeId, rating, comment, video_url: videoUrl || null }),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.message || 'Unable to submit review');
+        throw new Error('Unable to submit review');
       }
 
       setComment('');
       setVideoUrl('');
       setRating(5);
       setFeedback('Review submitted successfully. Refresh to see the latest review.');
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Review submission failed.');
+    } catch {
+      setFeedback('Review submission is available once your backend is connected.');
     } finally {
       setIsSubmitting(false);
     }

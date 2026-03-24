@@ -1,7 +1,6 @@
 import { BookOpenText, ChefHat, Sparkles } from 'lucide-react';
 
 import { RecipeCard } from '@/components/RecipeCard';
-import { SupabaseNotice } from '@/components/SupabaseNotice';
 import { Card, CardContent } from '@/components/ui/card';
 import { getRecipes } from '@/lib/recipes';
 
@@ -43,10 +42,6 @@ export default async function HomePage() {
             </Card>
           ))}
         </div>
-      </section>
-
-      <section className="mt-8">
-        <SupabaseNotice />
       </section>
 
       <section className="mt-10 space-y-6">
