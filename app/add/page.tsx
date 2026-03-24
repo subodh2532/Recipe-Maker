@@ -1,7 +1,6 @@
 import { WandSparkles } from 'lucide-react';
 
 import { RecipeForm } from '@/components/RecipeForm';
-import { SupabaseNotice } from '@/components/SupabaseNotice';
 
 export default function AddRecipePage() {
   return (
@@ -14,14 +13,10 @@ export default function AddRecipePage() {
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Add a new recipe</h1>
           <p className="text-base leading-7 text-muted-foreground">
-            Create a rich recipe post with ingredients, step-by-step instructions, and an image URL. The form is wired for your Supabase backend.
+            Create a rich recipe post with ingredients, step-by-step instructions, and an image URL. The form is wired for Supabase-ready submission.
           </p>
         </div>
       </section>
-
-      <div className="mb-6">
-        <SupabaseNotice />
-      </div>
 
       <RecipeForm />
     </main>
