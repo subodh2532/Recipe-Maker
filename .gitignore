@@ -1,12 +1,6 @@
-git clone https://github.com/subodh2532/Recipe-Maker.git
-cd Recipe-Maker
-git fetch --all
-
-# checkout your scaffold branch from remote PR branch name
-git checkout -b codex-build origin/codex/build-mvp-frontend-for-recipe-sharing-platform-...
-
-# merge latest main into it (if needed), preferring scaffold branch during conflicts
-git merge origin/main -X ours
-
-# push resolved branch
-git push -u origin codex-build
+.next
+node_modules
+.env*
+!.env.example
+coverage
+npm-debug.log*
