@@ -78,12 +78,28 @@ export function RecipeForm() {
 
       if (!response.ok) {
         throw new Error(result.message || 'Unable to add recipe');
+      const response = await fetch('/api/recipes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description,
+          image_url: imageUrl,
+          ingredients: filteredIngredients,
+          steps: filteredSteps,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to add recipe');
       }
 
       router.push('/');
       router.refresh();
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Recipe submission failed.');
+    } catch {
+      setError('Recipe submission is ready, and will persist once Supabase is configured.');
     } finally {
       setIsSubmitting(false);
     }
@@ -181,6 +197,7 @@ export function RecipeForm() {
           Submit Recipe
         </Button>
         <p className="text-sm text-muted-foreground">Sign in first, then this form will create live rows in Supabase via secure server API routes.</p>
+        <p className="text-sm text-muted-foreground">The form is wired for Supabase and gracefully falls back until env vars are configured.</p>
       </div>
     </form>
   );

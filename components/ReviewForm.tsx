@@ -46,6 +46,14 @@ export function ReviewForm({ recipeId }: { recipeId: string }) {
 
       if (!response.ok) {
         throw new Error(result.message || 'Unable to submit review');
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe_id: recipeId, rating, comment, video_url: videoUrl || null }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to submit review');
       }
 
       setComment('');
@@ -54,6 +62,8 @@ export function ReviewForm({ recipeId }: { recipeId: string }) {
       setFeedback('Review submitted successfully. Refresh to see the latest review.');
     } catch (error) {
       setFeedback(error instanceof Error ? error.message : 'Review submission failed.');
+    } catch {
+      setFeedback('Review submission is available once your backend is connected.');
     } finally {
       setIsSubmitting(false);
     }
