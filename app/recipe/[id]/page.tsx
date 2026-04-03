@@ -5,6 +5,7 @@ import { ListChecks, MessageSquareText, Soup, Star } from 'lucide-react';
 import { RatingStars } from '@/components/RatingStars';
 import { ReviewForm } from '@/components/ReviewForm';
 import { ReviewList } from '@/components/ReviewList';
+import { SupabaseNotice } from '@/components/SupabaseNotice';
 import { Card, CardContent } from '@/components/ui/card';
 import { getRecipeById } from '@/lib/recipes';
 
@@ -30,6 +31,7 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ i
                 <Star className="h-4 w-4 text-primary" />
                 {(recipe.averageRating ?? 0).toFixed(1)} average rating
               </span>
+              <span className="text-sm text-muted-foreground">{recipe.reviewCount ?? recipe.reviews?.length ?? 0} reviews</span>
               <span className="text-sm text-muted-foreground">{recipe.reviews?.length ?? 0} reviews</span>
             </div>
             <div className="space-y-3">
@@ -98,6 +100,7 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ i
               <p className="text-sm text-muted-foreground">Share feedback and optionally include a video walkthrough.</p>
             </div>
           </div>
+          <SupabaseNotice />
           <ReviewForm recipeId={recipe.id} />
           <ReviewList reviews={recipe.reviews ?? []} />
         </aside>

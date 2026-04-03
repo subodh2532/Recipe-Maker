@@ -9,6 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
+type RecipeClientPayload = {
+  title: string;
+  description: string;
+  image_url: string;
+  ingredients: string[];
+  steps: string[];
+};
+
 const emptyIngredient = '';
 const emptyStep = '';
 
@@ -52,6 +60,24 @@ export function RecipeForm() {
     setIsSubmitting(true);
 
     try {
+      const payload: RecipeClientPayload = {
+        title: title.trim(),
+        description: description.trim(),
+        image_url: imageUrl.trim(),
+        ingredients: filteredIngredients,
+        steps: filteredSteps,
+      };
+
+      const response = await fetch('/api/recipes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Unable to add recipe');
       const response = await fetch('/api/recipes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -70,6 +96,8 @@ export function RecipeForm() {
 
       router.push('/');
       router.refresh();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Recipe submission failed.');
     } catch {
       setError('Recipe submission is ready, and will persist once Supabase is configured.');
     } finally {
@@ -168,6 +196,7 @@ export function RecipeForm() {
           {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
           Submit Recipe
         </Button>
+        <p className="text-sm text-muted-foreground">Sign in first, then this form will create live rows in Supabase via secure server API routes.</p>
         <p className="text-sm text-muted-foreground">The form is wired for Supabase and gracefully falls back until env vars are configured.</p>
       </div>
     </form>

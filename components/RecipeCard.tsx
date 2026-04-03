@@ -30,6 +30,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
             <div className="flex items-center gap-2">
               <RatingStars rating={recipe.averageRating ?? 0} />
               <span className="text-sm font-medium text-muted-foreground">{(recipe.averageRating ?? 0).toFixed(1)}</span>
+              <span className="text-sm text-muted-foreground">({recipe.reviewCount ?? 0})</span>
             </div>
             <span className="inline-flex items-center text-sm font-medium text-primary">
               View

@@ -3,6 +3,7 @@ import { Recipe, Review } from '@/lib/types';
 export const mockRecipes: Recipe[] = [
   {
     id: '1',
+    user_id: 'mock-user-1',
     title: 'Creamy Tuscan Pasta',
     description: 'A rich and cozy pasta loaded with garlic, spinach, and sun-dried tomatoes.',
     image_url: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=1200&q=80',
@@ -12,6 +13,7 @@ export const mockRecipes: Recipe[] = [
   },
   {
     id: '2',
+    user_id: 'mock-user-2',
     title: 'Mango Chia Breakfast Bowl',
     description: 'A fresh, naturally sweet breakfast bowl with tropical mango and crunchy toppings.',
     image_url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80',
@@ -21,6 +23,7 @@ export const mockRecipes: Recipe[] = [
   },
   {
     id: '3',
+    user_id: 'mock-user-3',
     title: 'Smoky Paneer Tacos',
     description: 'Spiced paneer tacos with crunchy slaw and creamy yogurt drizzle.',
     image_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=80',
@@ -34,6 +37,7 @@ export const mockReviews: Review[] = [
   {
     id: 'r1',
     recipe_id: '1',
+    user_id: 'mock-user-2',
     rating: 5,
     comment: 'Super comforting and easy to make after work.',
     video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -42,6 +46,7 @@ export const mockReviews: Review[] = [
   {
     id: 'r2',
     recipe_id: '1',
+    user_id: 'mock-user-1',
     rating: 4,
     comment: 'Loved the sauce, added mushrooms for extra texture.',
     created_at: '2026-03-22T11:30:00.000Z',
@@ -49,6 +54,7 @@ export const mockReviews: Review[] = [
   {
     id: 'r3',
     recipe_id: '2',
+    user_id: 'mock-user-3',
     rating: 5,
     comment: 'Bright, healthy, and perfect for warm mornings.',
     created_at: '2026-03-19T09:15:00.000Z',
