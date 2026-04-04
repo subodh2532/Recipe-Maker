@@ -8,6 +8,13 @@ import { Button } from '@/components/ui/button';
 export const metadata: Metadata = {
   title: 'Recipe Maker',
   description: 'A modern recipe-sharing MVP built with Next.js, Tailwind, shadcn-style UI, Supabase, and Clerk.',
+import './globals.css';
+
+import { Navbar } from '@/components/Navbar';
+
+export const metadata: Metadata = {
+  title: 'Recipe Maker',
+  description: 'A modern recipe-sharing MVP built with Next.js, Tailwind, shadcn-style UI, and Supabase.',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -35,6 +42,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Navbar />
           {children}
         </ClerkProvider>
+        <Navbar />
+        {children}
       </body>
     </html>
   );

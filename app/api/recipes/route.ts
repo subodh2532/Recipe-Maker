@@ -55,4 +55,21 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
+
+import { isSupabaseConfigured, supabase } from '@/lib/supabaseClient';
+
+export async function POST(request: Request) {
+  const payload = await request.json();
+
+  if (!isSupabaseConfigured || !supabase) {
+    return NextResponse.json({ ok: false, message: 'Supabase credentials are missing.' }, { status: 503 });
+  }
+
+  const { error, data } = await supabase.from('recipes').insert(payload).select().single();
+
+  if (error) {
+    return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true, recipe: data });
 }
