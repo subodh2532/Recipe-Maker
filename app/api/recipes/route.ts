@@ -41,6 +41,7 @@ export async function POST(request: Request) {
       image_url: payload.image_url!.trim(),
       ingredients: payload.ingredients!.map((item) => item.trim()),
       steps: payload.steps!.map((item) => item.trim()),
+      user_id: userId ?? 'anonymous',
       user_id: userId,
     });
 

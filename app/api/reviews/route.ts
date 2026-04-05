@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       rating: payload.rating!,
       comment: payload.comment!.trim(),
       video_url: payload.video_url?.trim() || null,
+      user_id: userId ?? 'anonymous',
       user_id: userId,
     });
 

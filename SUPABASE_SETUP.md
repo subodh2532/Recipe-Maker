@@ -52,6 +52,10 @@ Expected:
 - UI uses Clerk `Show` blocks in `app/layout.tsx`.
 - Signed-out users see Sign In / Sign Up.
 - Signed-in users see profile button.
+- API routes accept signed-out submissions too (stored as `user_id = 'anonymous'`).
+
+## 6) Optional production hardening
+For public launch, require signed-in users for writes and enforce ownership rules in both API and RLS.
 - API routes require signed-in users (`auth()` on server).
 
 ## 6) Optional production hardening
