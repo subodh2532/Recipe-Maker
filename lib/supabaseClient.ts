@@ -17,3 +17,6 @@ export function getSupabaseClient() {
     },
   });
 }
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl as string, supabaseAnonKey as string)
+  : null;
