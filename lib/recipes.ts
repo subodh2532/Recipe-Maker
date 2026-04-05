@@ -72,6 +72,12 @@ export async function getRecipeById(id: string): Promise<Recipe | null> {
   };
 }
 
+function isMissingUserIdColumn(message?: string) {
+  if (!message) return false;
+  const normalized = message.toLowerCase();
+  return normalized.includes('user_id') && (normalized.includes('column') || normalized.includes('schema cache'));
+}
+
 export async function createRecipe(payload: RecipeInsert) {
   const supabaseServer = getSupabaseServerClient();
 
@@ -85,6 +91,14 @@ export async function createRecipe(payload: RecipeInsert) {
     };
   }
 
+  const insertResult = await supabaseServer.from('recipes').insert(payload).select().single();
+
+  if (!insertResult.error || !isMissingUserIdColumn(insertResult.error.message)) {
+    return insertResult;
+  }
+
+  const { user_id: _ignored, ...legacyPayload } = payload;
+  return supabaseServer.from('recipes').insert(legacyPayload).select().single();
   return supabaseServer.from('recipes').insert(payload).select().single();
 }
 
@@ -101,6 +115,14 @@ export async function createReview(payload: ReviewInsert) {
     };
   }
 
+  const insertResult = await supabaseServer.from('reviews').insert(payload).select().single();
+
+  if (!insertResult.error || !isMissingUserIdColumn(insertResult.error.message)) {
+    return insertResult;
+  }
+
+  const { user_id: _ignored, ...legacyPayload } = payload;
+  return supabaseServer.from('reviews').insert(legacyPayload).select().single();
   return supabaseServer.from('reviews').insert(payload).select().single();
   const recipes = await getRecipes();
   return recipes.find((recipe) => recipe.id === id) ?? null;

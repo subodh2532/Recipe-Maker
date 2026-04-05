@@ -54,6 +54,12 @@ Expected:
 - Signed-in users see profile button.
 - API routes accept signed-out submissions too (stored as `user_id = 'anonymous'`).
 
+## 6) Important migration note
+If your project was created before the latest migration update and does not yet have `user_id` columns,
+apply `migration.sql` again. The API has a legacy fallback, but running migration is still required as the final fix.
+
+## 7) Optional production hardening
+For public launch, require signed-in users for writes and enforce ownership rules in both API and RLS.
 ## 6) Optional production hardening
 For public launch, require signed-in users for writes and enforce ownership rules in both API and RLS.
 - API routes require signed-in users (`auth()` on server).
