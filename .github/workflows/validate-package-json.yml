@@ -1,6 +1,15 @@
 name: Validate package.json
 
 on:
+  push:
+    branches:
+      - main
+      - work
+      - 'codex/**'
+  pull_request:
+
+jobs:
+  validate-package-json:
   pull_request:
   push:
     branches: [ main, work ]
@@ -11,6 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Validate package.json syntax
         run: node scripts/validate-package-json.mjs
