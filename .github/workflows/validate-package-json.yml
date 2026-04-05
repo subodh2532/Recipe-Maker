@@ -10,6 +10,12 @@ on:
 
 jobs:
   validate-package-json:
+  pull_request:
+  push:
+    branches: [ main, work ]
+
+jobs:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

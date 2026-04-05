@@ -7,6 +7,12 @@ create extension if not exists pgcrypto;
 create table if not exists public.recipes (
   id uuid primary key default gen_random_uuid(),
   user_id text,
+-- Safe to paste into a fresh Supabase project.
+
+create extension if not exists pgcrypto;
+
+create table if not exists public.recipes (
+  id uuid primary key default gen_random_uuid(),
   title text not null check (char_length(trim(title)) between 3 and 160),
   description text not null check (char_length(trim(description)) between 10 and 2000),
   image_url text not null check (image_url ~* '^https?://'),
@@ -14,6 +20,7 @@ create table if not exists public.recipes (
   steps text[] not null check (coalesce(array_length(steps, 1), 0) > 0),
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
+  created_at timestamptz not null default timezone('utc', now())
 );
 
 create table if not exists public.reviews (
@@ -63,6 +70,14 @@ alter table public.recipes enable row level security;
 alter table public.reviews enable row level security;
 
 -- Public MVP read policies.
+create index if not exists recipes_created_at_idx on public.recipes (created_at desc);
+create index if not exists reviews_recipe_id_idx on public.reviews (recipe_id);
+create index if not exists reviews_created_at_idx on public.reviews (created_at desc);
+
+alter table public.recipes enable row level security;
+alter table public.reviews enable row level security;
+
+-- Public MVP policies for browsing and submitting recipes/reviews without auth.
 drop policy if exists "Public can read recipes" on public.recipes;
 create policy "Public can read recipes"
   on public.recipes
@@ -82,6 +97,12 @@ create policy "Public can insert recipes"
   for insert
   with check (true);
 
+drop policy if exists "Public can read reviews" on public.reviews;
+create policy "Public can read reviews"
+  on public.reviews
+  for select
+  using (true);
+
 drop policy if exists "Public can insert reviews" on public.reviews;
 create policy "Public can insert reviews"
   on public.reviews
@@ -93,6 +114,9 @@ create or replace view public.recipe_cards as
 select
   r.id,
   r.user_id,
+create or replace view public.recipe_cards as
+select
+  r.id,
   r.title,
   r.description,
   r.image_url,
@@ -117,3 +141,6 @@ comment on table public.recipes is 'Recipes shared by users in the Recipe Maker 
 comment on table public.reviews is 'Ratings and review comments for recipes.';
 comment on view public.recipe_cards is 'Convenience view for listing recipes with average ratings and review counts.';
 comment on function public.set_updated_at() is 'Trigger helper to keep updated_at in UTC.';
+comment on table public.recipes is 'Recipes shared by users in the Recipe Maker MVP.';
+comment on table public.reviews is 'Ratings and review comments for recipes.';
+comment on view public.recipe_cards is 'Convenience view for listing recipes with average ratings and review counts.';

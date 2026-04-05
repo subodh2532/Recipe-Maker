@@ -15,6 +15,10 @@ function validateReview(payload: Partial<ReviewInsert>) {
 export async function POST(request: Request) {
   const { userId } = await auth();
 
+  if (!userId) {
+    return NextResponse.json({ ok: false, message: 'Please sign in to submit a review.' }, { status: 401 });
+  }
+
   let payload: Partial<ReviewInsert>;
 
   try {
@@ -35,6 +39,7 @@ export async function POST(request: Request) {
       comment: payload.comment!.trim(),
       video_url: payload.video_url?.trim() || null,
       user_id: userId ?? 'anonymous',
+      user_id: userId,
     });
 
     if (error) {
@@ -48,4 +53,21 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
+
+import { isSupabaseConfigured, supabase } from '@/lib/supabaseClient';
+
+export async function POST(request: Request) {
+  const payload = await request.json();
+
+  if (!isSupabaseConfigured || !supabase) {
+    return NextResponse.json({ ok: false, message: 'Supabase credentials are missing.' }, { status: 503 });
+  }
+
+  const { error, data } = await supabase.from('reviews').insert(payload).select().single();
+
+  if (error) {
+    return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true, review: data });
 }
