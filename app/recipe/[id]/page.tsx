@@ -32,6 +32,7 @@ export default async function RecipeDetailPage({ params }: { params: Promise<{ i
                 {(recipe.averageRating ?? 0).toFixed(1)} average rating
               </span>
               <span className="text-sm text-muted-foreground">{recipe.reviewCount ?? recipe.reviews?.length ?? 0} reviews</span>
+              <span className="text-sm text-muted-foreground">{recipe.reviews?.length ?? 0} reviews</span>
             </div>
             <div className="space-y-3">
               <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{recipe.title}</h1>

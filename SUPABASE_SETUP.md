@@ -1,6 +1,9 @@
 # Supabase + Clerk Setup (Free Tier)
 
 Use this checklist after creating your Supabase and Clerk projects.
+# Supabase Setup (Free Tier)
+
+Use this checklist after creating your Supabase project.
 
 ## 1) Run SQL migration
 1. Open Supabase dashboard -> SQL Editor.
@@ -12,6 +15,10 @@ This creates:
 - `public.reviews` (with `user_id`)
 - `public.recipe_cards` view
 - RLS policies and indexes
+- `public.recipes`
+- `public.reviews`
+- `public.recipe_cards` view
+- RLS policies for public read + insert (MVP mode)
 
 ## 2) Configure environment variables
 Create `.env.local` in the project root:
@@ -49,3 +56,13 @@ Expected:
 
 ## 6) Optional production hardening
 For public launch, require signed-in users for writes and enforce ownership rules in both API and RLS.
+- API routes require signed-in users (`auth()` on server).
+
+## 6) Optional production hardening
+Replace MVP insert policies with stricter ownership checks and add moderation/rate-limits.
+## 3) Verify project settings
+- Ensure RLS is enabled for both tables (migration does this).
+- Ensure `anon` key is used only in frontend/public context.
+
+## 4) Optional production hardening
+For public launch, replace public insert policies with authenticated policies and add ownership columns.
