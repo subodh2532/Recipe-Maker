@@ -17,6 +17,10 @@ function validateRecipe(payload: Partial<RecipeInsert>) {
 export async function POST(request: Request) {
   const { userId } = await auth();
 
+  if (!userId) {
+    return NextResponse.json({ ok: false, message: 'Please sign in to add a recipe.' }, { status: 401 });
+  }
+
   let payload: Partial<RecipeInsert>;
 
   try {
@@ -38,6 +42,7 @@ export async function POST(request: Request) {
       ingredients: payload.ingredients!.map((item) => item.trim()),
       steps: payload.steps!.map((item) => item.trim()),
       user_id: userId ?? 'anonymous',
+      user_id: userId,
     });
 
     if (error) {
@@ -51,4 +56,21 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
+
+import { isSupabaseConfigured, supabase } from '@/lib/supabaseClient';
+
+export async function POST(request: Request) {
+  const payload = await request.json();
+
+  if (!isSupabaseConfigured || !supabase) {
+    return NextResponse.json({ ok: false, message: 'Supabase credentials are missing.' }, { status: 503 });
+  }
+
+  const { error, data } = await supabase.from('recipes').insert(payload).select().single();
+
+  if (error) {
+    return NextResponse.json({ ok: false, message: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true, recipe: data });
 }
