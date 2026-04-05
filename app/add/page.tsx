@@ -15,6 +15,7 @@ export default function AddRecipePage() {
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Add a new recipe</h1>
           <p className="text-base leading-7 text-muted-foreground">
             Create a rich recipe post with ingredients, step-by-step instructions, and an image URL. The form is wired for your Supabase backend.
+            Create a rich recipe post with ingredients, step-by-step instructions, and an image URL. The form is wired for Supabase-ready submission.
           </p>
         </div>
       </section>
